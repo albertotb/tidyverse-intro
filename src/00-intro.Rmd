@@ -19,19 +19,59 @@ output:
 
 ```{r setup, include=FALSE}
 library(tidyverse)
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = TRUE,fig.align='center')
 ```
 
-## Introducción
+<!-- util: https://atrebas.github.io/post/2019-03-03-datatable-dplyr/ -->
 
-- R es un lenguaje de programación y un entorno para manipular datos, realizar cálculos y gráficos.
-- Herramienta muy popular para tareas de Data Science (junto con Python)
+## ¿Qué es R?
+
+- R es un lenguaje de programación y un entorno para **manipular datos**, **realizar cálculos y gráficos**.
+- R es un lenguaje **interpretado**, por lo que no es necesario compilar el código fuente.
+- **Herramienta muy popular** para tareas de Data Science (junto con Python)
 - Comparado con herramientas clásicas (Excel, SaS, SPSS)
     + Más flexible
     + Curva de aprendizaje inclinada
-    + **Librerías**!
+    + **Librerías**/**Paquetes**!
 
 ---
+
+## Ventajas de R
+
+- Proyecto GNU (**open source**), cualquiera puede contribuir al desarrollo.
+- Gran cantidad de **paquetes** (9319 a 10 de octubre de 2019 -> 15103 a 12 de octubre de 2019):
+  + https://cran.r-project.org/web/packages/
+- La gran mayoría de nuevas tecnologías y algoritmos relacionados con **estadística** aparecen primero en R.
+- **Documentación** abundante en Internet, muchos **grupos de usuarios** activos.
+  + https://cran.r-project.org/other-docs.html
+
+```{r, echo=FALSE, message=TRUE, warning=TRUE, out.width="50%"}
+knitr::include_graphics("img/why_learn_r.jpg")
+```
+
+---
+
+## Inconvenientes de R
+
+- **Curva de aprendizaje inclinada**, como la mayoría de lenguajes de programación.
+```{r, echo=FALSE, message=TRUE, warning=TRUE, out.width="50%"}
+knitr::include_graphics("img/curva_de_aprendizaje.png")
+```
+- La calidad de algunos paquetes.
+- **Gestión de memoria**
+- **Menor rendimiento** que otros lenguajes de cálculo científico.
+
+---
+
+## Comparación de rendimiento
+
+
+
+---
+
+
+## R versus Python
+
 
 ## Librerías
 

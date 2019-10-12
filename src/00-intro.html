@@ -4,7 +4,7 @@
     <title>Introducción</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres y Irene Rodríguez" />
-    <meta name="date" content="2019-07-09" />
+    <meta name="date" content="2019-10-12" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Introducción
 ## Fundamentos lenguajes: R
 ### Alberto Torres y Irene Rodríguez
-### 2019-07-09
+### 2019-10-12
 
 ---
 
@@ -38,16 +38,42 @@ MathJax.Hub.Config({
 
 
 
-## Introducción
+&lt;!-- util: https://atrebas.github.io/post/2019-03-03-datatable-dplyr/ --&gt;
 
-- R es un lenguaje de programación y un entorno para manipular datos, realizar cálculos y gráficos.
-- Herramienta muy popular para tareas de Data Science (junto con Python)
+## ¿Qué es R?
+
+- R es un lenguaje de programación y un entorno para **manipular datos**, **realizar cálculos y gráficos**.
+- R es un lenguaje **interpretado**, por lo que no es necesario compilar el código fuente.
+- **Herramienta muy popular** para tareas de Data Science (junto con Python)
 - Comparado con herramientas clásicas (Excel, SaS, SPSS)
     + Más flexible
     + Curva de aprendizaje inclinada
-    + **Librerías**!
+    + **Librerías**/**Paquetes**!
 
 ---
+
+## Ventajas de R
+
+- Proyecto GNU (**open source**), cualquiera puede contribuir al desarrollo.
+- Gran cantidad de **paquetes** (9319 a 10 de octubre de 2019 -&gt; 15103 a 12 de octubre de 2019):
+  + https://cran.r-project.org/web/packages/
+- La gran mayoría de nuevas tecnologías y algoritmos relacionados con **estadística** aparecen primero en R.
+- **Documentación** abundante en Internet, muchos **grupos de usuarios** activos.
+  + https://cran.r-project.org/other-docs.html
+
+&lt;img src="img/why_learn_r.jpg" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Inconvenientes de R
+
+- **Curva de aprendizaje inclinada**, como la mayoría de lenguajes de programación.
+&lt;img src="img/curva_de_aprendizaje.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+
+- La calidad de algunos paquetes.
+- **Gestión de memoria**
+- **Menor rendimiento** que otros lenguajes de cálculo científico.
 
 ## Librerías
 
@@ -202,12 +228,12 @@ head(mpg)
 ## # A tibble: 6 x 11
 ##   manufacturer model displ  year   cyl trans  drv     cty   hwy fl    class
 ##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
-## 1 audi         a4      1.8  1999     4 auto(~ f        18    29 p     comp~
-## 2 audi         a4      1.8  1999     4 manua~ f        21    29 p     comp~
-## 3 audi         a4      2    2008     4 manua~ f        20    31 p     comp~
-## 4 audi         a4      2    2008     4 auto(~ f        21    30 p     comp~
-## 5 audi         a4      2.8  1999     6 auto(~ f        16    26 p     comp~
-## 6 audi         a4      2.8  1999     6 manua~ f        18    26 p     comp~
+## 1 audi         a4      1.8  1999     4 auto(… f        18    29 p     comp…
+## 2 audi         a4      1.8  1999     4 manua… f        21    29 p     comp…
+## 3 audi         a4      2    2008     4 manua… f        20    31 p     comp…
+## 4 audi         a4      2    2008     4 auto(… f        21    30 p     comp…
+## 5 audi         a4      2.8  1999     6 auto(… f        16    26 p     comp…
+## 6 audi         a4      2.8  1999     6 manua… f        18    26 p     comp…
 ```
 
 ---
@@ -309,7 +335,24 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     deleted = true;
   });
-})();</script>
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
 
 <script>
 (function() {
