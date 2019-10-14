@@ -54,9 +54,11 @@ knitr::include_graphics("img/why_learn_r.jpg")
 ## Inconvenientes de R
 
 - **Curva de aprendizaje inclinada**, como la mayoría de lenguajes de programación.
+
 ```{r, echo=FALSE, message=TRUE, warning=TRUE, out.width="50%"}
 knitr::include_graphics("img/curva_de_aprendizaje.png")
 ```
+
 - La calidad de algunos paquetes.
 - **Gestión de memoria**
 - **Menor rendimiento** que otros lenguajes de cálculo científico.
@@ -66,11 +68,29 @@ knitr::include_graphics("img/curva_de_aprendizaje.png")
 ## Comparación de rendimiento
 
 
+```{r, echo=FALSE, message=TRUE, warning=TRUE, out.width="100%"}
+knitr::include_graphics("img/rendimiento.png")
+```
+Tiempos de benchmark **relativos a C** (rendimiento de C=1.0). Fuente: https://julialang.org/
 
 ---
 
 
 ## R versus Python
+
+```{r, echo=FALSE, message=TRUE, warning=TRUE, out.width="150%"}
+knitr::include_graphics("img/r_vs_python.png")
+```
+
+
+---
+
+## Más información sobre R
+
+- Documentación y manunales de R:
+- R Reference Card: 
+- Nivel Básico:
+- Nivel avanzado: 
 
 
 ## Librerías
