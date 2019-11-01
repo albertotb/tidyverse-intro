@@ -4,7 +4,7 @@
     <title>Introducción</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres y Irene Rodríguez" />
-    <meta name="date" content="2019-10-27" />
+    <meta name="date" content="2019-11-01" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Introducción
 ## Fundamentos lenguajes: R
 ### Alberto Torres y Irene Rodríguez
-### 2019-10-27
+### 2019-11-01
 
 ---
 
@@ -38,7 +38,6 @@ MathJax.Hub.Config({
 
 
 
-&lt;!-- util: https://atrebas.github.io/post/2019-03-03-datatable-dplyr/ --&gt;
 
 ## ¿Qué es R?
 
@@ -478,9 +477,9 @@ seq(from=9, to=1, length.out=4)
     
     ```r
     sample(x=1:10, size=5)
-    ## [1]  9 10  8  3  6
+    ## [1] 10  4  2  7  8
     sample(x=1:10, size=20, replace=TRUE)
-    ##  [1]  8  9  2  5  3  8  6  4  1  3  7  7  5  5  5  7 10  4  5  1
+    ##  [1] 10  4 10  9  6  2  1  2  4  7  5  3  3  5  2  9  9  5  5  5
     # Ejercicio: simular 5 tiradas de una moneada trucada ("cara", "cruz") con probabilidad de "cara" de 0.8
     ```
   
@@ -488,11 +487,11 @@ seq(from=9, to=1, length.out=4)
     
     ```r
     rnorm(n=10, mean=4, sd=0.5)
-    ##  [1] 3.437192 3.435461 4.616100 4.163144 3.369170 4.287378 3.445728
-    ##  [8] 3.878429 3.050824 3.861378
+    ##  [1] 3.641997 3.957631 3.948670 3.591007 3.760887 3.646775 4.866782
+    ##  [8] 4.386148 4.403258 3.579909
     runif(n=10, min=4, max=10)
-    ##  [1] 5.027536 4.814617 5.186726 6.837023 8.205702 6.268206 8.936280
-    ##  [8] 7.262343 9.588993 5.933379
+    ##  [1] 4.353305 4.994729 5.810051 9.060496 6.930457 5.684458 4.780329
+    ##  [8] 6.774253 4.862901 6.952359
     ```
 
 ---
@@ -545,10 +544,10 @@ sin(x)
 # Funciones estadísticas: sum, product, min, max, mean, sd, var, quantile, summary
 x &lt;- rnorm(n=5, mean=10, sd=5)
 mean(x)
-## [1] 11.1843
+## [1] 9.289329
 summary(x)
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   5.763  10.356  10.725  11.184  14.029  15.048
+##  0.9768  6.5723 12.8753  9.2893 12.9685 13.0538
 
 # ¡OJO con los missing values!
 x &lt;- c(1,2,3,NA,5,6,NA,8,9,0)
@@ -870,17 +869,229 @@ encuesta.resultados
 
 
 ---
-## Data frames
+## Dataframes
 
-- Tabla para almacenar datos en R
-- Está compuesto por observaciones (filas) y variables (columnas)
+- Tabla para almacenar datos en R.
+- Está compuesto por observaciones (filas) y variables (columnas).
 - Cada variable puede ser de un tipo distinto (texto, categórica, numérica, etc.)
-- Todas las observaciones de una misma variable tienen que ser del mismo tipo
+- Todas las observaciones de una misma variable tienen que ser del mismo tipo.
 - Cada variable tiene un nombre.
 
 
 &lt;img src="img/dataframe.png" width="90%" style="display: block; margin: auto;" /&gt;
 
+
+---
+
+## Dataframes
+
+- Para crear un dataframe a partir de vectores se puede utilizar la función `data.frame`.
+
+```r
+d &lt;- data.frame(index = 11:15, sex =
+c("m","m","m","f","f"), age = c(99, 46, 23, 54, 23))
+d
+##   index sex age
+## 1    11   m  99
+## 2    12   m  46
+## 3    13   m  23
+## 4    14   f  54
+## 5    15   f  23
+```
+
+- Además, se pueden utilizar las funciones `cbind` y `rbind` para apendizar columnas y filas, respectivamente.
+
+```r
+# aniadir columna a dataframe
+d2 &lt;- cbind(d,weight=c(80,70,85,49,57))
+
+# aniadir fila a dataframe
+d3 &lt;- rbind(d2,list(16, "f", 31, 68))
+```
+
+---
+## Dataframes
+- Los datafames tienen las siguientes **restricciones**:
+  + Los componentes debn ser vectores, factores, matrices, listas u otros dataframes.
+  + Las matrices, listas y dataframes contribuyen al nuevo dataframe con tantas variables como columnas, elementos o variables tengan.
+    
+    ```r
+    d3 &lt;- rbind(d2,list(16, "f", 31, 68))
+    ```
+  + Los vectores no numéricos se transforman en factores, salvo que se indique lo contrario.
+    
+    ```r
+    d &lt;- data.frame(index = 11:15, sex =
+    c("m","m","m","f","f"), age = c(99, 46, 23, 54, 23),stringsAsFactors = FALSE)
+    str(d)
+    ## 'data.frame':	5 obs. of  3 variables:
+    ##  $ index: int  11 12 13 14 15
+    ##  $ sex  : chr  "m" "m" "m" "f" ...
+    ##  $ age  : num  99 46 23 54 23
+    ```
+  + Todos los vectores tienen que tener la misma longitud y las matrices el mismo número de filas.
+
+
+---
+
+## Funciones de dataframes
+&lt;img src="img/funcs_dataframes.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+Además, R tiene algunos dataframes pre-instalados en un paquete llamado `datasets` e includio en base R.
+  + Para ver la lista completa de datasets: `library(help="datasets")`.
+  + Para ver información detallada de un dataset: `help(&lt;nombre del dataset&gt;)`; por ejemplo: `help(mtcars)`.
+
+---
+
+## Funciones de dataframes
+
+
+```r
+# Número de filas
+nrow(mtcars)
+## [1] 32
+
+# Número de columnas
+nrow(mtcars)
+## [1] 32
+
+#Nombres de las columnas
+colnames(mtcars)
+##  [1] "mpg"  "cyl"  "disp" "hp"   "drat" "wt"   "qsec" "vs"   "am"   "gear"
+## [11] "carb"
+
+# Primeras 5 lineas
+head(mtcars,5)
+##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+```
+
+
+---
+
+## Funciones de dataframes
+
+
+```r
+# Estructura del dataframe
+str(mtcars)
+## 'data.frame':	32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...
+```
+
+---
+
+## Funciones de dataframes
+
+
+```r
+# Estadísticas de las variables
+summary(mtcars)
+##       mpg             cyl             disp             hp       
+##  Min.   :10.40   Min.   :4.000   Min.   : 71.1   Min.   : 52.0  
+##  1st Qu.:15.43   1st Qu.:4.000   1st Qu.:120.8   1st Qu.: 96.5  
+##  Median :19.20   Median :6.000   Median :196.3   Median :123.0  
+##  Mean   :20.09   Mean   :6.188   Mean   :230.7   Mean   :146.7  
+##  3rd Qu.:22.80   3rd Qu.:8.000   3rd Qu.:326.0   3rd Qu.:180.0  
+##  Max.   :33.90   Max.   :8.000   Max.   :472.0   Max.   :335.0  
+##       drat             wt             qsec             vs        
+##  Min.   :2.760   Min.   :1.513   Min.   :14.50   Min.   :0.0000  
+##  1st Qu.:3.080   1st Qu.:2.581   1st Qu.:16.89   1st Qu.:0.0000  
+##  Median :3.695   Median :3.325   Median :17.71   Median :0.0000  
+##  Mean   :3.597   Mean   :3.217   Mean   :17.85   Mean   :0.4375  
+##  3rd Qu.:3.920   3rd Qu.:3.610   3rd Qu.:18.90   3rd Qu.:1.0000  
+##  Max.   :4.930   Max.   :5.424   Max.   :22.90   Max.   :1.0000  
+##        am              gear            carb      
+##  Min.   :0.0000   Min.   :3.000   Min.   :1.000  
+##  1st Qu.:0.0000   1st Qu.:3.000   1st Qu.:2.000  
+##  Median :0.0000   Median :4.000   Median :2.000  
+##  Mean   :0.4062   Mean   :3.688   Mean   :2.812  
+##  3rd Qu.:1.0000   3rd Qu.:4.000   3rd Qu.:4.000  
+##  Max.   :1.0000   Max.   :5.000   Max.   :8.000
+```
+
+---
+
+## Indexado de dataframes
+
+- **Indexado de una variable/columna**. Generalmente se devuelve un vector del mismo tipo que el elemento del dataframe.
+
+```r
+# Con doble de corchete e índice de la columna
+mtcars[[1]]
+
+# Con doble corchete y nombre de la columna
+mtcars[["mpg"]]
+
+# $nombrecolumna
+mtcars$mpg
+```
+
+- **Indexado de un subconjunto de variables**. El resultado es otro dataframe.
+
+```r
+# con corchetes simples e indices de las columnas (positivos o negativos)
+mtcars[c(1,3)]
+mtcars[c(-2,4)]
+
+# con corchetes simples y vector con nombre de columnas
+mtcars[c("mpg","disp")]
+mtcars[c("mpg","disp","drat","wt","qsec","vs","am","gear","carb")]
+
+# con corchetes simples y un vector lógico
+mtcars[c(TRUE,FALSE,TRUE,FALSE,T,T,T,T,T,T,T)]
+```
+
+---
+## Indexado de dataframes
+
+- **Indexado de un subconjunto de filas**. El resultado es otro dataframe.
+  + **¡OJO!** Con la coma después del indexado de filas. Aunque se quieran seleccionar todas las columnas, es necesaria.
+
+```r
+# Índices enteros (positivos o negativos)
+mtcars[1:2,]
+mtcars[-32:-3,]
+
+# Nombre(s) de fila(s)
+mtcars[c("Mazda RX4", "Mazda RX4 Wag"),]
+
+# Vector lógico
+mtcars[rownames(mtcars)=="Mazda RX4",]
+mtcars[mtcars$mpg&gt;30 &amp; mtcars$carb==2,]
+```
+
+- **Indexado de filas y columnas**. Sigue el formato `df[filas,columnas]`. En general el resultado es otro dataframe (salvo que se indexe una única columna -vector- o una única fila -lista-).
+
+```r
+mtcars[4:8, -c(5:11)]
+mtcars["Camaro Z28", c("mpg", "gear")]
+mtcars[mtcars$mpg &gt; 30, c(1,4)]
+```
+
+
+---
+
+## dplyr y data.table
+
+- Las librerías **dplyr** y **data.table** son librerías avanzadas para la gestión eficiente (en memoria y computación) de dataframes.
+- En la práctica, se utilizan más que data.frame.
+
+&lt;img src="img/datatable_vs_dplyr.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -900,6 +1111,17 @@ encuesta.resultados
 ?mean
 help(mean)
 ```
+
+---
+
+# R Markdown
+
+- Los [R Markdown](https://rmarkdown.rstudio.com/) son similares a los notebooks de Python, y permiten tener en un único documento partes de texto (markdown) y partes de código.
+- R Markdown sopote decenas de formatos de salida: HTML,PDF, MS Word, aplicaciones Shiny, etc.
+- Permite también generar el output en forma de diapositivas (¡como éstas!).
+- El paquete [flexdashboard](https://rmarkdown.rstudio.com/flexdashboard/) permite generar R Markdowns para dashboards interactivos.
+
+&lt;img src="img/ejemplo_markdown.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -923,108 +1145,9 @@ help(mean)
 ## Más información sobre R
 
 - [StackOverflow](https://stackoverflow.com/questions/tagged/r). Las preguntas con el **tag R** contienen mucha información y problemas resueltos. Además, las nuevas preguntas se responden en cuestión de horas.
-- [CressValidated](https://stats.stackexchange.com/). No es una comunidad específica de R (más bien estadística), pero hay mucha información acerca de cómo realizar procedimientos concretos de análisis de datos y aprendizaje automático en R.
+- [CrossValidated](https://stats.stackexchange.com/). No es una comunidad específica de R (más bien estadística), pero hay mucha información acerca de cómo realizar procedimientos concretos de análisis de datos y aprendizaje automático en R.
 - [@RLangTip](https://twitter.com/RLangTip). Cuenta de Twitter que publica consejos y trucos diarios.
 - [The R Project for Statistical Computing](https://twitter.com/RLangTip). Grupo de LinkedIn.
-
-
-
----
-
-## Funciones de data frames
-
-Número de filas
-
-```r
-nrow(mpg)
-## [1] 234
-```
-
-Número de columnas
-
-```r
-ncol(mpg)
-## [1] 11
-```
-
----
-
-Nombres de las columnas
-
-```r
-colnames(mpg)
-##  [1] "manufacturer" "model"        "displ"        "year"        
-##  [5] "cyl"          "trans"        "drv"          "cty"         
-##  [9] "hwy"          "fl"           "class"
-```
-
-Primeras líneas
-
-```r
-head(mpg)
-## # A tibble: 6 x 11
-##   manufacturer model displ  year   cyl trans  drv     cty   hwy fl    class
-##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
-## 1 audi         a4      1.8  1999     4 auto(… f        18    29 p     comp…
-## 2 audi         a4      1.8  1999     4 manua… f        21    29 p     comp…
-## 3 audi         a4      2    2008     4 manua… f        20    31 p     comp…
-## 4 audi         a4      2    2008     4 auto(… f        21    30 p     comp…
-## 5 audi         a4      2.8  1999     6 auto(… f        16    26 p     comp…
-## 6 audi         a4      2.8  1999     6 manua… f        18    26 p     comp…
-```
-
----
-
-## str
-
-Estructura del data frame
-
-```r
-str(mpg)
-## Classes 'tbl_df', 'tbl' and 'data.frame':	234 obs. of  11 variables:
-##  $ manufacturer: chr  "audi" "audi" "audi" "audi" ...
-##  $ model       : chr  "a4" "a4" "a4" "a4" ...
-##  $ displ       : num  1.8 1.8 2 2 2.8 2.8 3.1 1.8 1.8 2 ...
-##  $ year        : int  1999 1999 2008 2008 1999 1999 2008 1999 1999 2008 ...
-##  $ cyl         : int  4 4 4 4 6 6 6 4 4 4 ...
-##  $ trans       : chr  "auto(l5)" "manual(m5)" "manual(m6)" "auto(av)" ...
-##  $ drv         : chr  "f" "f" "f" "f" ...
-##  $ cty         : int  18 21 20 21 16 18 18 18 16 20 ...
-##  $ hwy         : int  29 29 31 30 26 26 27 26 25 28 ...
-##  $ fl          : chr  "p" "p" "p" "p" ...
-##  $ class       : chr  "compact" "compact" "compact" "compact" ...
-```
-
----
-
-## summary
-
-Estadísticas de las variables
-
-```r
-summary(mpg)
-##  manufacturer          model               displ            year     
-##  Length:234         Length:234         Min.   :1.600   Min.   :1999  
-##  Class :character   Class :character   1st Qu.:2.400   1st Qu.:1999  
-##  Mode  :character   Mode  :character   Median :3.300   Median :2004  
-##                                        Mean   :3.472   Mean   :2004  
-##                                        3rd Qu.:4.600   3rd Qu.:2008  
-##                                        Max.   :7.000   Max.   :2008  
-##       cyl           trans               drv                 cty       
-##  Min.   :4.000   Length:234         Length:234         Min.   : 9.00  
-##  1st Qu.:4.000   Class :character   Class :character   1st Qu.:14.00  
-##  Median :6.000   Mode  :character   Mode  :character   Median :17.00  
-##  Mean   :5.889                                         Mean   :16.86  
-##  3rd Qu.:8.000                                         3rd Qu.:19.00  
-##  Max.   :8.000                                         Max.   :35.00  
-##       hwy             fl               class          
-##  Min.   :12.00   Length:234         Length:234        
-##  1st Qu.:18.00   Class :character   Class :character  
-##  Median :24.00   Mode  :character   Mode  :character  
-##  Mean   :23.44                                        
-##  3rd Qu.:27.00                                        
-##  Max.   :44.00
-```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
