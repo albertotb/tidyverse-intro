@@ -4,7 +4,7 @@
     <title>Introducción</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres y Irene Rodríguez" />
-    <meta name="date" content="2019-11-01" />
+    <meta name="date" content="2019-11-03" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Introducción
 ## Fundamentos lenguajes: R
 ### Alberto Torres y Irene Rodríguez
-### 2019-11-01
+### 2019-11-03
 
 ---
 
@@ -477,9 +477,9 @@ seq(from=9, to=1, length.out=4)
     
     ```r
     sample(x=1:10, size=5)
-    ## [1] 10  4  2  7  8
+    ## [1] 10  8  2  5  1
     sample(x=1:10, size=20, replace=TRUE)
-    ##  [1] 10  4 10  9  6  2  1  2  4  7  5  3  3  5  2  9  9  5  5  5
+    ##  [1]  9  4  3  7 10  8  7  3  8  3  3  1  2  5  6  4  3  5  9 10
     # Ejercicio: simular 5 tiradas de una moneada trucada ("cara", "cruz") con probabilidad de "cara" de 0.8
     ```
   
@@ -487,11 +487,11 @@ seq(from=9, to=1, length.out=4)
     
     ```r
     rnorm(n=10, mean=4, sd=0.5)
-    ##  [1] 3.641997 3.957631 3.948670 3.591007 3.760887 3.646775 4.866782
-    ##  [8] 4.386148 4.403258 3.579909
+    ##  [1] 3.860342 4.345651 3.920170 3.530653 4.494956 4.191195 3.316591
+    ##  [8] 4.449997 5.232099 4.157904
     runif(n=10, min=4, max=10)
-    ##  [1] 4.353305 4.994729 5.810051 9.060496 6.930457 5.684458 4.780329
-    ##  [8] 6.774253 4.862901 6.952359
+    ##  [1] 7.718340 5.419933 5.353405 7.224346 9.971629 5.735294 4.989977
+    ##  [8] 7.159012 7.437869 4.140011
     ```
 
 ---
@@ -544,10 +544,10 @@ sin(x)
 # Funciones estadísticas: sum, product, min, max, mean, sd, var, quantile, summary
 x &lt;- rnorm(n=5, mean=10, sd=5)
 mean(x)
-## [1] 9.289329
+## [1] 7.809008
 summary(x)
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##  0.9768  6.5723 12.8753  9.2893 12.9685 13.0538
+##  0.8881  1.9705  8.0168  7.8090 12.5276 15.6420
 
 # ¡OJO con los missing values!
 x &lt;- c(1,2,3,NA,5,6,NA,8,9,0)
@@ -634,11 +634,59 @@ mean(x &gt; 0)
 
 ---
 
-## Indexado de vectores por condiciones lógicas
+## Indexado de vectores por condiciones lógicas (cont.)
 
-- R tiene muchas funciones que toman vectores como argumentos y devuelven vectores lógicos obtenidos en base a múltiples criterios.
+- R tiene muchas funciones que toman vectores como argumentos y &lt;u&gt;devuelven vectores lógicos obtenidos en base a múltiples criterios&lt;/u&gt;.
 
+- R implementa las operaciones lógicas "estándar" (negación `!`, and `&amp;` y or `|`), además de otras operaciones lógicas muy útiles para la manipulación de datos.
+
+
+&lt;img src="img/operadores_logicos.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+&lt;!--
 &lt;img src="img/funcs_vectores.png" width="100%" style="display: block; margin: auto;" /&gt;
+--&gt;
+---
+
+## Indexado de vectores por condiciones lógicas (cont.)
+
+- **Ejemplo**: generar un vector x con 250 valores enteros aleatorios entre 1 y 1000.
+ 1. Calcular el máximo y el mínimo del vector.
+ 2. Calcular la media del vector. ¿Qué valor esperarías?
+ 3. Calcular cuántas veces aparecen cualquiera de números 3,14,15 o 92.
+
+---
+
+
+## Operaciones de conjuntos sobre vectores
+- Sobre los vectores se pueden hacer las operaciones matemáticas estándar de conjuntos: union, intersección, diferencia, etc.
+
+```r
+a &lt;- c(2,4,5,6,1,2,5)
+b &lt;- c(1,7,10,9,2,1,2)
+# union
+union(a,b)
+## [1]  2  4  5  6  1  7 10  9
+
+# intersección asimetrica
+intersect(a,b)
+## [1] 2 1
+intersect(b,a)
+## [1] 1 2
+
+# diferencia
+setdiff(a,b)
+## [1] 4 5 6
+
+# igualdad de conjuntos
+setequal(a,b)
+## [1] FALSE
+
+# pertenencia de un elmento al conjunto
+is.element(10,a)
+## [1] FALSE
+```
 
 ---
 
@@ -841,6 +889,7 @@ c(parcela, new)
 ```
 
 ---
+
 
 ## Factores
 - Un factor es un vector que contiene una clasificación discreta de sus elementos.
@@ -1095,25 +1144,6 @@ mtcars[mtcars$mpg &gt; 30, c(1,4)]
 
 ---
 
-## Referencias y ayuda
-
-- La referencia principal del curso es el libro "[R for Data Science](https://r4ds.had.co.nz/)" de Hadley Wickham y Garret Grolemund (O'Reilly 2017)
-
-- Tiene una versión online gratuita
-
-- Hadley Wickham es además el creador de muchos de los paquetes que componen el [tidyverse](https://www.tidyverse.org/)
-
-- TODO: poner enlace a cheatsheet
-
-- Acceder a la ayuda de R:
-
-```r
-?mean
-help(mean)
-```
-
----
-
 # R Markdown
 
 - Los [R Markdown](https://rmarkdown.rstudio.com/) son similares a los notebooks de Python, y permiten tener en un único documento partes de texto (markdown) y partes de código.
@@ -1122,6 +1152,28 @@ help(mean)
 - El paquete [flexdashboard](https://rmarkdown.rstudio.com/flexdashboard/) permite generar R Markdowns para dashboards interactivos.
 
 &lt;img src="img/ejemplo_markdown.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+## Referencias y ayuda
+
+- La referencia principal del curso es el libro "[R for Data Science](https://r4ds.had.co.nz/)" de Hadley Wickham y Garret Grolemund (O'Reilly 2017)
+
+- Tiene una versión online gratuita
+
+- Hadley Wickham es además el creador de muchos de los paquetes que componen el [tidyverse](https://www.tidyverse.org/)
+
+- [Cheatsheet R Base](https://rstudio.com/wp-content/uploads/2016/05/base-r.pdf)
+
+- [Cheatsheet dplyr](https://rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf) 
+
+- Acceder a la ayuda de R:
+
+```r
+?mean
+help(mean)
+```
 
 ---
 

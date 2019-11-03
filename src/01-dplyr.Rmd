@@ -125,15 +125,13 @@ filter(mpg, model == "a4")
 ## Operadores lógicos
 
 - Con la función `filter` se pueden seleccionar filas por condiciones lógicas.
-- R implementa las operaciones lógicas "estándar" (negación `!`, and `&` y or `|`), además de otras operaciones lógicas muy útiles para la manipulación de datos.
+- Dado que las condiciones se aplican sobre columnas del tibble y estas columnas son vectores, los operadores lógicos sobre vectores (devuelven vectores lógicos) se pueden utilizar para filtrar las filas de un dataframe.
 
 
 ```{r, echo=FALSE, message=TRUE, warning=TRUE, out.width="100%"}
 knitr::include_graphics("img/operadores_logicos.png")
 ```
 
-
-- El resultado de todas estas operaciones son valores lógicos `TRUE` (`T`) o `FALSE` (`F`) y pueden utilizarse para el filtrado de filas y columnas.
 
 ---
 
@@ -325,10 +323,19 @@ knitr::include_graphics("img/mutate_funciones2.png")
 
 ## summarize
 
-Colapsa el data frame a una única fila
+- Calcula variables agregadas.
+- Es posible crear más de una variable en la misma llamada separando cada nueva variable con `,`.
 
 ```{r, echo=T}
+
 summarize(mpg, max_cyl = max(cyl), avg_cty = mean(cty), min_year = min(year))
+
+# Algunas de las funciones de agregacion pueden operar sobre varias columnas
+summarize(mpg, pares_distintos = n_distinct(cyl,cty), maxim = max(cyl, cty))
+
+# Segundo elemento de la columna 'trans'
+summarize(mpg, nth(trans,2))
+
 ```
 
 ---
@@ -342,9 +349,36 @@ summarize(mpg, max_cyl = max(cyl), avg_cty = mean(cty), min_year = min(year))
     + Rango: `max()`, `min()`, `quantile()`
     + Posición: `first()`, `last()`, `nth()`
     + Lógicas: `any()`, `all()`
-    + *Conteo*: `n()`, `n_distinct()` (solo se pueden usar dentro de `summarize()`)
+    + *Conteo*: `n()`, `n_distinct()`
+      - Solo se pueden usar dentro de `summarize()`
+      - `n()` no recibe argumentos, `n_distinct()` el nombre de la(s) columna(s).
     
-- Todas reducen un vector de números a un único resultado
+- Todas reducen un vector de números a un único resultado.
+<center>
+```{r, echo=FALSE, message=TRUE, warning=TRUE, out.width="50%"}
+knitr::include_graphics("img/summary_function.png")
+```
+</center>
+
+
+---
+
+## Otras funciones para agregar variables
+
+
+- `sumarize_all`: Aplica la función de agregación a todas las columnas. Se aplica la función a cada columna individualmente.
+```{r,eval=F}
+# todas las columnas de tipo caracter
+summarize_all(mpg,max)
+```
+- `summarize_at`: Aplica la función de agragación a un subconjunto de columnas pasadas como argumento. Se aplica la función a cada columna individualmente.
+```{r,eval=F}
+summarize_at(mpg,c("displ","year","cyl","cty","hwy"),max)
+```
+- `summarize_if`: Aplica la función de agregación a todas las columnas que cumplen una condición lógica especificada. Se aplica la función a cada columna individualmente.
+```{r,eval=F}
+summarize_if(mpg,is.numeric,max)
+```
 
 ---
 
@@ -395,6 +429,7 @@ mpg %>%
 - Esto permite concatenar funciones sin almacenar resultados intermedios y siguiendo el orden lógico
 
 ---
+
 
 ## Operaciones agrupadas
 
@@ -466,24 +501,4 @@ mpg %>%
 t4a <- gather(table4a, key = "year", value = "cases", num_range("", 1999:2000))
 t4b <- gather(table4b, key = "YEAR", value = "population", `1999`:`2000`)
 inner_join(t4a, t4b, by=c("year" = "YEAR", "country"))
-```
-
----
-
-## Operar en múltiples columnas
-
-- dplyr tiene [variantes](https://dplyr.tidyverse.org/reference/scoped.html) de sus funciones principales que operan sobre múltiples columnas
-- La selección de columnas puede ser:
-    + Todas, funciones que terminan en `_all`
-    + Con un predicado, funciones que terminan en `_if`
-    + Vector con nombres, posiciones o función [`vars()`](https://dplyr.tidyverse.org/reference/vars.html)
-
----
-
-```{r}
-summarize_all(mpg, funs(sum(is.na(.))))
-```
-
-```{r}
-mutate_if(mpg, is.numeric, log)
 ```

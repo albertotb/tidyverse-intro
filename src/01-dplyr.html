@@ -4,7 +4,7 @@
     <title>dplyr</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres Barrán y Irene Rodríguez Luján" />
-    <meta name="date" content="2019-11-01" />
+    <meta name="date" content="2019-11-03" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # dplyr
 ## Fundamentos lenguajes: R
 ### Alberto Torres Barrán y Irene Rodríguez Luján
-### 2019-11-01
+### 2019-11-03
 
 ---
 
@@ -191,13 +191,11 @@ filter(mpg, model == "a4")
 ## Operadores lógicos
 
 - Con la función `filter` se pueden seleccionar filas por condiciones lógicas.
-- R implementa las operaciones lógicas "estándar" (negación `!`, and `&amp;` y or `|`), además de otras operaciones lógicas muy útiles para la manipulación de datos.
+- Dado que las condiciones se aplican sobre columnas del tibble y estas columnas son vectores, los operadores lógicos sobre vectores (devuelven vectores lógicos) se pueden utilizar para filtrar las filas de un dataframe.
 
 
 &lt;img src="img/operadores_logicos.png" width="100%" /&gt;
 
-
-- El resultado de todas estas operaciones son valores lógicos `TRUE` (`T`) o `FALSE` (`F`) y pueden utilizarse para el filtrado de filas y columnas.
 
 ---
 
@@ -524,7 +522,8 @@ glimpse(mutate_if(mpg,is.numeric,min))
 
 ## summarize
 
-Colapsa el data frame a una única fila
+- Calcula variables agregadas.
+- Es posible crear más de una variable en la misma llamada separando cada nueva variable con `,`.
 
 
 ```r
@@ -538,6 +537,30 @@ summarize(mpg, max_cyl = max(cyl), avg_cty = mean(cty), min_year = min(year))
 ## 1       8    16.9     1999
 ```
 
+```r
+# Algunas de las funciones de agregacion pueden operar sobre varias columnas
+summarize(mpg, pares_distintos = n_distinct(cyl,cty), maxim = max(cyl, cty))
+```
+
+```
+## # A tibble: 1 x 2
+##   pares_distintos maxim
+##             &lt;int&gt; &lt;int&gt;
+## 1              33    35
+```
+
+```r
+# Segundo elemento de la columna 'trans'
+summarize(mpg, nth(trans,2))
+```
+
+```
+## # A tibble: 1 x 1
+##   `nth(trans, 2)`
+##   &lt;chr&gt;          
+## 1 manual(m5)
+```
+
 ---
 
 ## Funciones de agregación
@@ -549,9 +572,37 @@ summarize(mpg, max_cyl = max(cyl), avg_cty = mean(cty), min_year = min(year))
     + Rango: `max()`, `min()`, `quantile()`
     + Posición: `first()`, `last()`, `nth()`
     + Lógicas: `any()`, `all()`
-    + *Conteo*: `n()`, `n_distinct()` (solo se pueden usar dentro de `summarize()`)
+    + *Conteo*: `n()`, `n_distinct()`
+      - Solo se pueden usar dentro de `summarize()`
+      - `n()` no recibe argumentos, `n_distinct()` el nombre de la(s) columna(s).
     
-- Todas reducen un vector de números a un único resultado
+- Todas reducen un vector de números a un único resultado.
+&lt;center&gt;
+&lt;img src="img/summary_function.png" width="50%" /&gt;
+&lt;/center&gt;
+
+
+---
+
+## Otras funciones para agregar variables
+
+
+- `sumarize_all`: Aplica la función de agregación a todas las columnas. Se aplica la función a cada columna individualmente.
+
+```r
+# todas las columnas de tipo caracter
+summarize_all(mpg,max)
+```
+- `summarize_at`: Aplica la función de agragación a un subconjunto de columnas pasadas como argumento. Se aplica la función a cada columna individualmente.
+
+```r
+summarize_at(mpg,c("displ","year","cyl","cty","hwy"),max)
+```
+- `summarize_if`: Aplica la función de agregación a todas las columnas que cumplen una condición lógica especificada. Se aplica la función a cada columna individualmente.
+
+```r
+summarize_if(mpg,is.numeric,max)
+```
 
 ---
 
@@ -605,6 +656,7 @@ mpg %&gt;%
 - Esto permite concatenar funciones sin almacenar resultados intermedios y siguiendo el orden lógico
 
 ---
+
 
 ## Operaciones agrupadas
 
@@ -719,52 +771,6 @@ inner_join(t4a, t4b, by=c("year" = "YEAR", "country"))
 ## 4 Afghanistan 2000    2666   20595360
 ## 5 Brazil      2000   80488  174504898
 ## 6 China       2000  213766 1280428583
-```
-
----
-
-## Operar en múltiples columnas
-
-- dplyr tiene [variantes](https://dplyr.tidyverse.org/reference/scoped.html) de sus funciones principales que operan sobre múltiples columnas
-- La selección de columnas puede ser:
-    + Todas, funciones que terminan en `_all`
-    + Con un predicado, funciones que terminan en `_if`
-    + Vector con nombres, posiciones o función [`vars()`](https://dplyr.tidyverse.org/reference/vars.html)
-
----
-
-
-```r
-summarize_all(mpg, funs(sum(is.na(.))))
-```
-
-```
-## # A tibble: 1 x 11
-##   manufacturer model displ  year   cyl trans   drv   cty   hwy    fl class
-##          &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
-## 1            0     0     0     0     0     0     0     0     0     0     0
-```
-
-
-```r
-mutate_if(mpg, is.numeric, log)
-```
-
-```
-## # A tibble: 234 x 11
-##    manufacturer model displ  year   cyl trans drv     cty   hwy fl    class
-##    &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;
-##  1 audi         a4    0.588  7.60  1.39 auto… f      2.89  3.37 p     comp…
-##  2 audi         a4    0.588  7.60  1.39 manu… f      3.04  3.37 p     comp…
-##  3 audi         a4    0.693  7.60  1.39 manu… f      3.00  3.43 p     comp…
-##  4 audi         a4    0.693  7.60  1.39 auto… f      3.04  3.40 p     comp…
-##  5 audi         a4    1.03   7.60  1.79 auto… f      2.77  3.26 p     comp…
-##  6 audi         a4    1.03   7.60  1.79 manu… f      2.89  3.26 p     comp…
-##  7 audi         a4    1.13   7.60  1.79 auto… f      2.89  3.30 p     comp…
-##  8 audi         a4 q… 0.588  7.60  1.39 manu… 4      2.89  3.26 p     comp…
-##  9 audi         a4 q… 0.588  7.60  1.39 auto… 4      2.77  3.22 p     comp…
-## 10 audi         a4 q… 0.693  7.60  1.39 manu… 4      3.00  3.33 p     comp…
-## # … with 224 more rows
 ```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

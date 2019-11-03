@@ -538,12 +538,55 @@ mean(x > 0)
 
 ---
 
-## Indexado de vectores por condiciones lógicas
+## Indexado de vectores por condiciones lógicas (cont.)
 
-- R tiene muchas funciones que toman vectores como argumentos y devuelven vectores lógicos obtenidos en base a múltiples criterios.
+- R tiene muchas funciones que toman vectores como argumentos y <u>devuelven vectores lógicos obtenidos en base a múltiples criterios</u>.
+
+- R implementa las operaciones lógicas "estándar" (negación `!`, and `&` y or `|`), además de otras operaciones lógicas muy útiles para la manipulación de datos.
+
 
 ```{r, echo=FALSE, message=TRUE, warning=TRUE, out.width="100%"}
+knitr::include_graphics("img/operadores_logicos.png")
+```
+
+
+<!--
+```{r, echo=FALSE, message=TRUE, warning=TRUE, out.width="100%"}
 knitr::include_graphics("img/funcs_vectores.png")
+```
+-->
+---
+
+## Indexado de vectores por condiciones lógicas (cont.)
+
+- **Ejemplo**: generar un vector x con 250 valores enteros aleatorios entre 1 y 1000.
+ 1. Calcular el máximo y el mínimo del vector.
+ 2. Calcular la media del vector. ¿Qué valor esperarías?
+ 3. Calcular cuántas veces aparecen cualquiera de números 3,14,15 o 92.
+
+---
+
+
+## Operaciones de conjuntos sobre vectores
+- Sobre los vectores se pueden hacer las operaciones matemáticas estándar de conjuntos: union, intersección, diferencia, etc.
+```{r,eval=T}
+a <- c(2,4,5,6,1,2,5)
+b <- c(1,7,10,9,2,1,2)
+# union
+union(a,b)
+
+# intersección asimetrica
+intersect(a,b)
+intersect(b,a)
+
+# diferencia
+setdiff(a,b)
+
+# igualdad de conjuntos
+setequal(a,b)
+
+# pertenencia de un elemento al conjunto
+is.element(10,a)
 ```
 
 ---
@@ -685,6 +728,7 @@ c(parcela, new)
 ```
 
 ---
+
 
 ## Factores
 - Un factor es un vector que contiene una clasificación discreta de sus elementos.
@@ -873,24 +917,6 @@ knitr::include_graphics("img/datatable_vs_dplyr.png")
 
 ---
 
-## Referencias y ayuda
-
-- La referencia principal del curso es el libro "[R for Data Science](https://r4ds.had.co.nz/)" de Hadley Wickham y Garret Grolemund (O'Reilly 2017)
-
-- Tiene una versión online gratuita
-
-- Hadley Wickham es además el creador de muchos de los paquetes que componen el [tidyverse](https://www.tidyverse.org/)
-
-- TODO: poner enlace a cheatsheet
-
-- Acceder a la ayuda de R:
-```{r, echo=T, eval=F}
-?mean
-help(mean)
-```
-
----
-
 # R Markdown
 
 - Los [R Markdown](https://rmarkdown.rstudio.com/) son similares a los notebooks de Python, y permiten tener en un único documento partes de texto (markdown) y partes de código.
@@ -900,6 +926,27 @@ help(mean)
 
 ```{r, echo=FALSE, message=TRUE, warning=TRUE, out.width="50%"}
 knitr::include_graphics("img/ejemplo_markdown.png")
+```
+
+---
+
+
+## Referencias y ayuda
+
+- La referencia principal del curso es el libro "[R for Data Science](https://r4ds.had.co.nz/)" de Hadley Wickham y Garret Grolemund (O'Reilly 2017)
+
+- Tiene una versión online gratuita
+
+- Hadley Wickham es además el creador de muchos de los paquetes que componen el [tidyverse](https://www.tidyverse.org/)
+
+- [Cheatsheet R Base](https://rstudio.com/wp-content/uploads/2016/05/base-r.pdf)
+
+- [Cheatsheet dplyr](https://rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf) 
+
+- Acceder a la ayuda de R:
+```{r, echo=T, eval=F}
+?mean
+help(mean)
 ```
 
 ---
