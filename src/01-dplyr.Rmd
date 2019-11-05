@@ -77,14 +77,16 @@ iris %>%
   + Tibbles son estrictos en cuanto a la selección de columnas.
   + La selección de filas y/o columnas en tibbles siempre devuelve otro tibble.
 
-- Se puede crear una tabla tibble con la función `tbl_df`:
+- Se puede crear una tabla tibble con la función `tibble`:
 ```{r,eval=F}
-iris_tbl <- tbl_df(iris)
-is.tbl(iris)
-is.tbl(iris_tbl)
-is.data.frame(iris)
-is.data.frame(iris_tbl)
+tibble(
+  x = 1:3,
+  z = x ^ 2,
+  txt = "hola"
+)
 ```
+
+- Se puede hacer que un data.frame pase a ser tibble con las funcniones `as_tibble()` o `tbl_df`: `as_tibble(iris)` o `tbl_df(iris)`.
 
 ---
 
@@ -105,10 +107,10 @@ Selecciona filas por su posición
 
 ```{r, echo = TRUE}
 # con indices positivos
-slice(mpg, 1:5)
+slice(mpg, 1:3)
 
 # descartar filas usando indices negativos
-slice(mpg, -6:-234)
+slice(mpg, -4:-234)
 ```
 
 ---
@@ -304,6 +306,7 @@ knitr::include_graphics("img/mutate_funciones2.png")
 
 ---
 
+<!--
 ## Operadores y funciones aritméticas
 
 - R implementa los operadores aritméticos habituales 
@@ -318,7 +321,7 @@ knitr::include_graphics("img/mutate_funciones2.png")
 - También las funciones aritméticas comunes: `log()`, `exp()`, `sin()`, `cos()`, `tan()`, `cumsum()`, `cumprod()`, `abs()`, `sqrt()`, `round()`, `ceiling()`, `floor()`, `trunc()`, ...
 
 - Operan sobre vectores (columnas de un data frame) elemento a elemento.
-
+-->
 ---
 
 ## summarize
@@ -327,15 +330,9 @@ knitr::include_graphics("img/mutate_funciones2.png")
 - Es posible crear más de una variable en la misma llamada separando cada nueva variable con `,`.
 
 ```{r, echo=T}
-
 summarize(mpg, max_cyl = max(cyl), avg_cty = mean(cty), min_year = min(year))
-
 # Algunas de las funciones de agregacion pueden operar sobre varias columnas
 summarize(mpg, pares_distintos = n_distinct(cyl,cty), maxim = max(cyl, cty))
-
-# Segundo elemento de la columna 'trans'
-summarize(mpg, nth(trans,2))
-
 ```
 
 ---
@@ -433,23 +430,56 @@ mpg %>%
 
 ## Operaciones agrupadas
 
-- La función `group_by()` convierte un data frame en otro agrupado por una o más variables
-- En los data frames agrupados todas las operaciones anteriores se realizan "por grupo"
-- `ungroup()` elimina la agrupación
+- La función `group_by()` convierte un data frame en otro agrupado por una o más variables.
+- En los data frames agrupados todas las operaciones anteriores se realizan "por grupo".
+- `ungroup()` elimina la agrupación.
 
 ---
 
-## Operaciones agrupadas (cont.)
+## Slice con group_by
 
-- `slice()` los indices son relativos al grupo
-- `select()` mantiene siempre las variables agrupadas, aunque no se indique explicitamente
-- `arrange()` ordena en primer lugar por las variables agrupadas
-
+- Los indices son relativos al grupo.
+```{r,eval=T}
+mpg %>%
+  group_by(cyl) %>%
+  slice(1:2)
+```
 ---
 
+## Select con group_by
+
+- `select()` mantiene siempre las variables agrupadas, aunque no se indique explicitamente.
+```{r,eval=F}
+dim(mpg)
+data <- mpg %>%
+  group_by(cyl) %>%
+  select(cty)
+dim(data)
+```
+```{r,eval=T}
+data <- mpg %>%
+  group_by(cyl) %>%
+  select(cty)
+glimpse(data)
+```
+---
+
+## arrange con group_by
+
+- `arrange()` ordena por la(s) variable(s) especificadas como parámetros.
+
+```{r,eval=T}
+data <- mpg %>%
+  group_by(cyl) %>%
+  arrange(manufacturer)
+glimpse(data)
+```
+
+
+---
 ## summarize con group_by
 
-Un `summarize()` sobre un data frame agrupado devuelve otro con tantas filas como grupos (valores distintos de la/s variable/s usadas para agrupar)
+Un `summarize()` sobre un data frame agrupado devuelve otro con tantas filas como grupos (valores distintos de la/s variable/s usadas para agrupar).
 
 ```{r, echo=T}
 mpg %>%
@@ -461,23 +491,39 @@ mpg %>%
 
 ## mutate con group_by
 
-Un `mutate()` sobre un data frame agrupado devuelve siempre otro data frame con el mismo número de filas que el original
+Un `mutate()` sobre un data frame agrupado devuelve siempre otro data frame con el mismo número de filas que el original.
 
 ```{r, echo=T}
-mpg %>%
+data <- mpg %>%
   group_by(cyl) %>%
   mutate(avg_cty = mean(cty))
+glimpse(data)
 ```
 
 ---
 
+## Ejercicio
+
+1. En el dataset iris queremos saber si la media de la longitud del pétalo es muy distinta entre los distintos tipos de flor.
+
+---
+
+
 ## joins
 
-- La librería `dplyr` implementa funciones para unir data frames: `inner_join()`, `left_join()`, `right_join()` y `full_join()`
+- La librería `dplyr` implementa funciones para unir data frames: 
+  + `inner_join(x,y)`: Devuelve las filas que crucen tant en x como en y.
+  + `left_join(x,y)`: Devuelve todas, las filas en x y las que crucen en y (completa con NA)
+  + `right_join(x,y)`: Devuelve todas las filas en y y las que crucen en x (completa con NA).
+  + `full_join(x,y)`: Devuelve todas las filas de x e y (completa con NA).
+  + `semi_join(x,y)`: Devuelve solo las filas de x que crucen con y (pero no y).
+  + `anti_join(x,y)`: Devuelve solo las filas de x que NO crucen con y.
 
 - Diagrama de Venn [R for Data Science]
 <center>
-![Diagrama de Venn](join-venn.png)
+```{r, echo=FALSE, message=TRUE, warning=TRUE, out.width="80%"}
+knitr::include_graphics("img/join-venn.png")
+```
 </center>
 
 ---
@@ -499,6 +545,73 @@ mpg %>%
 
 ```{r}
 t4a <- gather(table4a, key = "year", value = "cases", num_range("", 1999:2000))
+head(t4a,4)
 t4b <- gather(table4b, key = "YEAR", value = "population", `1999`:`2000`)
+head(t4b,4)
+```
+
+---
+
+## Ejemplo (cont.)
+```{r,eval=T}
 inner_join(t4a, t4b, by=c("year" = "YEAR", "country"))
 ```
+---
+
+
+## Operaciones de conjuntos con dplyr
+
+- `dplyr` implementa la lógica de operaciones con conjuntos sobre tibbles.
+  + `intersect(x,y)`: Filas que aparecen tanto en x como en y.
+  + `union(x,y)`: Filas que aparecen en x, en y, o en ambos.
+  + `setdiff(x,y)`: Filas que aparecen en x, pero no en y.
+  
+```{r,eval=F}
+x <- tibble(
+  x1=c("A","B","C"),
+  x2=1:3
+)
+y <- tibble(
+  x1=c("B","C","D"),
+  x2=2:4
+)
+dplyr::intersect(x,y)
+dplyr::union(x,y)
+dplyr::setdiff(x,y)
+```
+
+
+---
+
+
+## Añadir filas y/o columnas en dplyr
+
+- `dplyr` implementa las funciones `bind_rows` y `bind_cols` para añadir filas o columnas a un tibble, respectivamente.
+- Las funciones de `dplyr` son <u>más eficientes</u> que las funciones `rbind` y `cbind` de R base. 
+- En `bin_rows` las columnas se combinan por nombre y las columnas que no están en alguno de los dataframes se rellenan con NAs.
+
+```{r,eval=T}
+# You can mix vectors and data frames:
+bind_rows(
+  c(a = 1, b = 2),
+  tibble(saludo="hola",a = 3:4, b = 5:6),
+  c(a = 7, b = 8)
+)
+```
+---
+
+## Añadir filas y/o columnas en dplyr (cont.)
+
+- En `bind_cols` se unen las subtablas por posición -> todos los dataframes deben tener el mismo número de filas.
+  + Para unir por valores, usar `join`.
+
+```{r,eval=T}
+  
+# Both have to be tibbles
+bind_cols(
+  tibble(a = 3:4, b = c("a","b")),
+  tibble(logical = c(T,F))
+)
+```
+
+

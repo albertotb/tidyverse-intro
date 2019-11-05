@@ -922,12 +922,12 @@ knitr::include_graphics("img/datatable_vs_dplyr.png")
 - Los [R Markdown](https://rmarkdown.rstudio.com/) son similares a los notebooks de Python, y permiten tener en un único documento partes de texto (markdown) y partes de código.
 - R Markdown sopote decenas de formatos de salida: HTML,PDF, MS Word, aplicaciones Shiny, etc.
 - Permite también generar el output en forma de diapositivas (¡como éstas!).
+- Más información sobre R Markdown en [R for Data Science](https://r4ds.had.co.nz/r-markdown.html).
 - El paquete [flexdashboard](https://rmarkdown.rstudio.com/flexdashboard/) permite generar R Markdowns para dashboards interactivos.
 
 ```{r, echo=FALSE, message=TRUE, warning=TRUE, out.width="50%"}
 knitr::include_graphics("img/ejemplo_markdown.png")
 ```
-
 ---
 
 

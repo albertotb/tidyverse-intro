@@ -4,7 +4,7 @@
     <title>Introducción</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres y Irene Rodríguez" />
-    <meta name="date" content="2019-11-03" />
+    <meta name="date" content="2019-11-05" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Introducción
 ## Fundamentos lenguajes: R
 ### Alberto Torres y Irene Rodríguez
-### 2019-11-03
+### 2019-11-05
 
 ---
 
@@ -477,9 +477,9 @@ seq(from=9, to=1, length.out=4)
     
     ```r
     sample(x=1:10, size=5)
-    ## [1] 10  8  2  5  1
+    ## [1]  6  8 10  3  5
     sample(x=1:10, size=20, replace=TRUE)
-    ##  [1]  9  4  3  7 10  8  7  3  8  3  3  1  2  5  6  4  3  5  9 10
+    ##  [1]  4  7  2  8  9  3  7  5  6  9  7 10  8  4  7  7  9 10  3  6
     # Ejercicio: simular 5 tiradas de una moneada trucada ("cara", "cruz") con probabilidad de "cara" de 0.8
     ```
   
@@ -487,11 +487,11 @@ seq(from=9, to=1, length.out=4)
     
     ```r
     rnorm(n=10, mean=4, sd=0.5)
-    ##  [1] 3.860342 4.345651 3.920170 3.530653 4.494956 4.191195 3.316591
-    ##  [8] 4.449997 5.232099 4.157904
+    ##  [1] 4.172094 4.473185 4.210837 5.224135 4.356322 3.976547 3.514743
+    ##  [8] 3.508795 3.884984 3.839554
     runif(n=10, min=4, max=10)
-    ##  [1] 7.718340 5.419933 5.353405 7.224346 9.971629 5.735294 4.989977
-    ##  [8] 7.159012 7.437869 4.140011
+    ##  [1] 8.977995 9.694881 8.440756 8.004888 9.748488 8.895718 5.168978
+    ##  [8] 5.823505 9.577142 4.399897
     ```
 
 ---
@@ -544,10 +544,10 @@ sin(x)
 # Funciones estadísticas: sum, product, min, max, mean, sd, var, quantile, summary
 x &lt;- rnorm(n=5, mean=10, sd=5)
 mean(x)
-## [1] 7.809008
+## [1] 13.32892
 summary(x)
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##  0.8881  1.9705  8.0168  7.8090 12.5276 15.6420
+##   4.439  12.075  15.062  13.329  17.251  17.818
 
 # ¡OJO con los missing values!
 x &lt;- c(1,2,3,NA,5,6,NA,8,9,0)
@@ -683,7 +683,7 @@ setdiff(a,b)
 setequal(a,b)
 ## [1] FALSE
 
-# pertenencia de un elmento al conjunto
+# pertenencia de un elemento al conjunto
 is.element(10,a)
 ## [1] FALSE
 ```
@@ -1149,10 +1149,10 @@ mtcars[mtcars$mpg &gt; 30, c(1,4)]
 - Los [R Markdown](https://rmarkdown.rstudio.com/) son similares a los notebooks de Python, y permiten tener en un único documento partes de texto (markdown) y partes de código.
 - R Markdown sopote decenas de formatos de salida: HTML,PDF, MS Word, aplicaciones Shiny, etc.
 - Permite también generar el output en forma de diapositivas (¡como éstas!).
+- Más información sobre R Markdown en [R for Data Science](https://r4ds.had.co.nz/r-markdown.html).
 - El paquete [flexdashboard](https://rmarkdown.rstudio.com/flexdashboard/) permite generar R Markdowns para dashboards interactivos.
 
 &lt;img src="img/ejemplo_markdown.png" width="50%" style="display: block; margin: auto;" /&gt;
-
 ---
 
 
