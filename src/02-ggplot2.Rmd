@@ -24,12 +24,20 @@ library(lubridate)
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
-# ggplot2
-
 ## Introducción
 
-- Implementa una gramática de gráficos en R
-- Divide un gráfico en sus componentes esenciales
+- Implementa una **gramática de gráficos** en R.
+- Divide un gráfico en sus componentes esenciales:
+  + Un conjunto de datos.
+  + Un conjunto de marcas visuales (puntos, lineas, barras) y propiedades asociadas a ellas (color, tamaño, tipo, etc.).
+  + Un sistema de coordenadas.
+  
+<center>
+```{r, echo=FALSE, message=TRUE, warning=TRUE, out.width="50%"}
+knitr::include_graphics("img/ggplot2.png")
+```  
+</center>  
+  
 - Múltiples ventajas con respecto a los gráficos de R base
     + Leyenda automática
     + Facetas
@@ -39,8 +47,22 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 ## Gramática de gráficos
 
-- *mapping* se define con `aes()` (*aesthetics*) y describe como las variables de un data frame se asignan a propiedades visuales
+- Para generar un gráfico en ggplot, se usan las funciones `qplot()` o `ggplot()`.
+  + `qplot()` es una versión simplificada de `ggplot()` que permite definir los datos a representar, coordenadas y la forma en qué se representar (líneas, puntos...), y provee muchos <u>valores por defecto</u>.
+  
+- Por su flexibilidad, veremos `ggplot()`.
+
+---
+
+## Gramática de gráficos (cont.)
+<center>
+```{r, echo=FALSE, message=TRUE, warning=TRUE, out.width="50%"}
+knitr::include_graphics("img/ggplot3.png")
+```  
+</center>  
+
 - *data* data frame 
+- *mapping* se define con `aes()` (*aesthetics*) y describe como las variables de un data frame se asignan a propiedades visuales
 - *geom* objetos geométricos con el que se van a representar los datos
 - *stat* transforman los datos
 - *position* pequeños ajustes en la posición de los elementos
@@ -49,7 +71,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 ## Ejemplo
 
-```{r, echo=T}
+```{r, echo=T, fig.asp=0.8}
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy))
 ```
@@ -70,6 +92,12 @@ ggplot(data = <DATA>) +
 ---
 
 ## Aesthetics
+
+
+```{r, eval=F, fig.asp=0.8}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
 
 - El gráfico anterior representa dos variables, `displ` y `cyl`
 - Variables adicionales se pueden asignar a distintas propiedades del gráfico (*aesthetics*)
@@ -105,32 +133,6 @@ ggplot(data = mpg) +
   geom_point(mapping = aes(x = displ, y = hwy), color = "blue", alpha = 0.8, shape = 2)
 ```
 
----
-
-## Facets
-
-- Otra opción para representar variables adicionales son las facetas
-- Cada faceta es un subgráfico realizado con un subconjunto de los datos
-
----
-
-## facet_wrap
-
-```{r, echo=T}
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy)) +
-  facet_wrap(~drv)
-```
-
----
-
-## facet_grid
-
-```{r}
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy)) +
-  facet_grid(drv ~ class)
-```
 
 ---
 

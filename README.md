@@ -15,6 +15,13 @@
     * Seleccionar columnas con `select`
     * Crear nuevas columnas con `mutate`
     * Ordenar y realizar cálculos con `arrange` y `summarize`
+    * Sentencia `group_by`
+    * Operaciones agrupadas
+    * Operaciones en múltiples columnas
+    * `dplyr` avanzado
+      * Joins
+      * Operaciones de conjuntos
+      * Añadir filas y/o columnas
 
 <!--
 3. Funciones útiles de R base
@@ -30,33 +37,28 @@
     * Gráficos de barras (`geom_bar`)
     * Transformaciones estadísticas (`geom_hist`)
 
-4. `dplyr` avanzado
-    * Sentencia `group_by`
-    * Operaciones agrupadas
-    * Operaciones en múltiples columnas
-    * Joins
 
-5. Transformar data.frames con `tidyr` [[slides]](./src/03-tidyr.html)
+4. Transformar data.frames con `tidyr` [[slides]](./src/03-tidyr.html)
     * Transformar entre formatos ancho y largo (`spread` y `gather`)
     * Separar o unir columnas (`separate` y `unite`)
 
-6. Lectura de datos con `readr` y `readxl` [[slides]](./src/04-readr.html)
+5. Lectura de datos con `readr` y `readxl` [[slides]](./src/04-readr.html)
     * Importar archivos CSV
     * Importar archivos texto plano con delimitadores
     * Importar Excel
     * Opciones más comunes
 
-7. `ggplot2` avanzado
+6. `ggplot2` avanzado
     * Facetas  (`facet_wrap`, `facet_grid`)
     * Ejes
     * Estilos
 
-8. Tipos de datos avanzados
+7. Tipos de datos avanzados
     * Cadenas de texto (`stringr`) [[slides]](./src/05-stringr.html)
     * Factores (`forcats`) [[slides]](./src/06-forcats.html)
     * Fechas (`lubridate`) [[slides]](./src/07-lubridate.html)
 
-9. Programación funcional con `purrr`
+8. Programación funcional con `purrr`
 
 
 ## Enlaces:
