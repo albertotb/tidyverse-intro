@@ -35,7 +35,7 @@
     * Gráficos de puntos (`geom_point`)
     * Gráficos de lineas (`geom_line`)
     * Gráficos de barras (`geom_bar`)
-    * Transformaciones estadísticas (`geom_hist`)
+    * Transformaciones estadísticas (`geom_histogram`)
 
 
 4. Transformar data.frames con `tidyr` [[slides]](./src/03-tidyr.html)

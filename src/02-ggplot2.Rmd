@@ -43,6 +43,14 @@ knitr::include_graphics("img/ggplot2.png")
     + Facetas
     + ...
 
+
+---
+
+## Introducción (cont.)
+
+- Los capítulos de *data visualization* y *graphics for communication* del libro [R for data science](https://r4ds.had.co.nz/) son una buena forma de empzar.
+- La [cheatsheet de ggplot2](https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) es muy útil como resumen, así como la [documentación de referencia de ggplot2](https://ggplot2.tidyverse.org/reference/) que contiene muchos ejemplos.
+
 ---
 
 ## Gramática de gráficos
@@ -69,15 +77,6 @@ knitr::include_graphics("img/ggplot3.png")
 
 ---
 
-## Ejemplo
-
-```{r, echo=T, fig.asp=0.8}
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy))
-```
-
----
-
 ## Plantilla
 
 - El gráfico más sencillo consta como mínimo de los siguientes componentes [[Fuente](https://r4ds.had.co.nz/data-visualisation.html#introduction-1)]:
@@ -88,6 +87,16 @@ ggplot(data = <DATA>) +
 ```
 - Cambiando las secciones entre `<>` se pueden crear múltiples tipos de gráficos
 - Añadiendo geoms con el operador `+` se pueden crear gráficos compuestos
+
+---
+
+## Ejemplo
+
+```{r, echo=T, fig.asp=0.8}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
+
 
 ---
 
@@ -122,8 +131,8 @@ ggplot(data = mpg) +
 
 ## Apariencia del gráfico
 
-- Para cambiar la apariencia del gráfico, se les asigna un valor manualmente a las propiedades gráficas anteriores
-- No transmiten información sobre una variable
+- Para cambiar la apariencia del gráfico, se les asigna un valor **manualmente** a las propiedades gráficas anteriores
+- **No transmiten información sobre una variable**
 - Tienen que estar **fuera** de la función `aes()`
 
 ---
@@ -141,6 +150,8 @@ ggplot(data = mpg) +
 - Objectos geométricos que se usan para representar la relación entre las variables `x` e `y`
 - Algunos ejemplos son:
     + `geom_bar()`, barras
+    + `geom_histogram()`, histograma
+    + `geom_density()`, función de densidad
     + `geom_point()`, puntos
     + `geom_line()`, lineas
     + `geom_text()`, texto
@@ -150,11 +161,22 @@ ggplot(data = mpg) +
 
 ---
 
+## Geoms (cont.)
+
+<center>
+```{r, echo=FALSE, message=TRUE, warning=TRUE, out.width="90%"}
+knitr::include_graphics("img/geom_funcs.png")
+```  
+</center>  
+
+
+---
+
 ## Múltiples geoms
 
-Se pueden mostrar múltiples geoms añadiendo nuevas capas al gráfico
+Se pueden mostrar múltiples geoms añadiendo nuevas capas al gráfico:
 
-```{r}
+```{r, fig.asp=0.8}
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy)) +
   geom_smooth(mapping = aes(x = displ, y = hwy))
@@ -164,7 +186,9 @@ ggplot(data = mpg) +
 
 ## Ajustes globales
 
-```{r}
+* Se puede configurar el `aes` en la llamada a `ggplot()` y las funciones tipo `geom` tomarán ese `aes` en caso de que no se sobreescriban los atributos del `aes` en la llamada a la función `geom`.
+
+```{r,fig.asp=0.7}
 ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
   geom_point() +
   geom_smooth()
@@ -182,7 +206,7 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) +
 
 ## Ajustes locales
 
-```{r}
+```{r,fig.asp=0.8}
 ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
   geom_point(mapping = aes(color = drv)) +
   geom_smooth(linetype = 2)
@@ -190,17 +214,33 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
 
 ---
 
+## Ajustes locales (cont.)
+
+* También es posible cambiar los datos a representar en un `geom`.
+
+```{r,fig.asp=0.7}
+mymean <- mpg %>% group_by(displ) %>% summarize(media=mean(hwy))
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point() +
+  geom_point(data=mymean,mapping=aes(x=displ,y=media),color="red")
+
+```
+
+
+
+---
+
 ## Transformaciones estadísticas
 
-- Alunos `geom` calculan nuevas variables a representar a partir de las originales del data frame
-- Un ejemplo es `geom_smooth()`, que ajusta un polinomio a los datos
-- Para ver la transformación estadística de cada `geom` se puede consultar el valor por defecto del parámetro `stat` en la ayuda
+- Algunos `geom` calculan nuevas variables a representar a partir de las originales del data frame.
+- Un ejemplo es `geom_smooth()`, que ajusta un polinomio a los datos.
+- Para ver la transformación estadística de cada `geom` se puede consultar el valor por defecto del parámetro `stat` en la ayuda.
 
 ---
 
 ## Ejemplo geom_bar
 
-```{r}
+```{r,fig.asp=0.8}
 ggplot(data = mpg) + 
   geom_bar(aes(x = class))
 ```
@@ -235,7 +275,7 @@ ggplot(data = n_class) +
     + Contar cuantos valores hay en cada intervalo
     + Representar con barras
 
-- La transformacion estadística se conoce como *binning*
+- La transformacion estadística se conoce como *binning*.
 
 ---
 
@@ -249,8 +289,12 @@ ggplot(data = mpg) +
 ## Resultado transformación
 
 Las variables resultado de la transformación son accesibles como `..<NOMBRE>..`
+  + `..count..`: número de puntos en cada bin
+  + `..ncount..`: número de puntos en cada bin normalizados por el máximo de conteos sobre todos los bines.
+  + `..density..`: función de densidad
+  + `..ndensity..`: función de densidad normalizada por el máximo valor de densidad sobre todos los bines.
 
-```{r}
+```{r, fig.asp=0.45}
 ggplot(data = mpg) + 
   geom_bar(mapping = aes(x = hwy, y = ..density..), stat = "bin")
 ```
@@ -266,22 +310,46 @@ ggplot(data = mpg) +
 
 ---
 
-## geom_hist
+## geom_histogram
 
-```{r}
+```{r,fig.asp=0.8}
 ggplot(data = mpg) + 
   geom_histogram(mapping = aes(x = hwy))
 ```
 
 ---
 
+## geom_histogram (cont.)
+
+* Generamos el histograma anterior normalizado y en porcentaje.
+
+```{r,fig.asp=0.8}
+ggplot(data = mpg) + 
+  geom_histogram(mapping = aes(x = hwy, y=100*..count../sum(..count..)))
+```
+
+---
+
+* De forma equivalente:
+
+```{r,fig.asp=0.8}
+ggplot(data = mpg) + 
+  geom_bar(mapping = aes(x = hwy, y=100*..count../sum(..count..)),stat="bin")
+```
+
+---
+
 ## Ajustes de posición
 
-- Ciertos `geom`s tienen un ajuste opcional de posición
-- En `geom_bar()` su valor por defecto es `stack`
-- Otros ajustes posibles son `dodge` y `fill` 
-- En `geom_point()` su valor por defecto es `identity`
-- Otro valor posible es `jitter`
+- Ciertos `geom`s tienen un ajuste opcional de posición.
+  + En `geom_bar()` su valor por defecto es `stack`.
+  + En `geom_point()` su valor por defecto es `identity`.
+  
+<center>
+```{r, echo=FALSE, message=TRUE, warning=TRUE, out.width="50%"}
+knitr::include_graphics("img/ggplot_position.png")
+```  
+</center>  
 
 ---
 

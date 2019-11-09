@@ -943,6 +943,8 @@ knitr::include_graphics("img/ejemplo_markdown.png")
 
 - [Cheatsheet dplyr](https://rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf) 
 
+- [Cheatsheet ggplot](https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) 
+
 - Acceder a la ayuda de R:
 ```{r, echo=T, eval=F}
 ?mean
